@@ -34,6 +34,7 @@ This repo gives you a simple improvement loop:
 - `.learnings/LEARNINGS.md`
 - `.learnings/ERRORS.md`
 - `.learnings/FEATURE_REQUESTS.md`
+- `.learnings/EXPERIMENTS.md`
 - Obsidian vault notes under `ClawLite/Operations/Learnings/`
 
 ---
@@ -110,3 +111,5 @@ node scripts/promote-learning.mjs workflow "Rule text"
 # Bottom line
 
 If you want OpenClaw to improve over time instead of repeating the same mistakes across sessions, this repo gives you a simple operational memory loop.
+oss sessions, this repo gives you a simple operational memory loop.
+es across sessions, this repo gives you a simple operational memory loop.

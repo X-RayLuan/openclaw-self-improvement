@@ -23,6 +23,9 @@ Use this skill when the user asks:
 - "record blockers / corrections / feature gaps"
 - "build a self-improving OpenClaw workflow"
 - "operationalize lessons learned"
+- "test whether this new rule actually helps"
+- "run an eval loop on this workflow/skill/SOP"
+- "should we keep this new guardrail or discard it"
 
 ## Files this skill uses
 - `.learnings/LEARNINGS.md`
@@ -82,6 +85,17 @@ A good use of this skill should produce one of:
 ## Important limits
 - Logging is not the same as fixing.
 - Do not treat a learning entry as closure for a broken deliverable.
+- Use this skill to reduce repeated mistakes, not to excuse them.
+
+## References
+- `{baseDir}/references/schema.md`
+- `{baseDir}/references/promotion-guide.md`
+ to reduce repeated mistakes, not to excuse them.
+
+## References
+- `{baseDir}/references/schema.md`
+- `{baseDir}/references/promotion-guide.md`
+a learning entry as closure for a broken deliverable.
 - Use this skill to reduce repeated mistakes, not to excuse them.
 
 ## References

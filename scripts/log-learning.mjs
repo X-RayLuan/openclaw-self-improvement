@@ -13,7 +13,8 @@ fs.mkdirSync(dir, { recursive: true });
 const map = {
   learning: { file: 'LEARNINGS.md', prefix: 'LRN', header: 'learning', area: 'workflow' },
   error: { file: 'ERRORS.md', prefix: 'ERR', header: 'error', area: 'ops' },
-  feature: { file: 'FEATURE_REQUESTS.md', prefix: 'FEAT', header: 'feature', area: 'product' }
+  feature: { file: 'FEATURE_REQUESTS.md', prefix: 'FEAT', header: 'feature', area: 'product' },
+  experiment: { file: 'EXPERIMENTS.md', prefix: 'EXP', header: 'experiment', area: 'ops' }
 };
 const cfg = map[kind];
 if (!cfg) {

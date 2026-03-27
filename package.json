@@ -9,6 +9,8 @@
     "self-improvement",
     "lessons-learned",
     "ops-learning",
+    "eval-loop",
+    "binary-evals",
     "mission-control",
     "karen",
     "obsidian",
@@ -17,5 +19,8 @@
   "bin": {
     "openclaw-log-learning": "./scripts/log-learning.mjs",
     "openclaw-promote-learning": "./scripts/promote-learning.mjs"
+  }
+}
+omote-learning.mjs"
   }
 }

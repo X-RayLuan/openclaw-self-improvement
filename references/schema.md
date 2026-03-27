@@ -70,3 +70,33 @@ Why it matters
 ### Suggested Implementation
 Minimal implementation direction
 ```
+
+## Experiment entry
+```md
+## [EXP-YYYYMMDD-XXX] experiment
+
+**Logged**: ISO-8601 timestamp
+**Priority**: medium | high | critical
+**Status**: baseline | testing | keep | discard | partial_keep
+**Area**: workflow | tools | product | growth | security | infra | ops
+
+### Target
+What repeated problem is being improved
+
+### Baseline
+What was failing before the change
+
+### Mutation
+The single change introduced
+
+### Binary Evals
+- [ ] Eval 1
+- [ ] Eval 2
+- [ ] Eval 3
+
+### Result
+What improved / did not improve
+
+### Keep or Discard
+keep | discard | partial_keep
+```
