@@ -116,3 +116,7 @@ A good use of this skill should produce one of:
 - `{baseDir}/references/promotion-guide.md`
 - `{baseDir}/references/eval-loop.md`
 - `{baseDir}/references/examples.md`
+- `{baseDir}/references/decision-rules.md`
+
+- `{baseDir}/references/eval-loop.md`
+- `{baseDir}/references/examples.md`

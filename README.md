@@ -2,7 +2,7 @@
 
 **Turn mistakes, corrections, and repeated blockers into durable operating rules.**
 
-`openclaw-self-improvement` helps OpenClaw / ClawLite operators log learnings, separate errors from feature gaps, and promote useful patterns into durable workflow rules.
+`openclaw-self-improvement` helps OpenClaw / ClawLite operators log learnings, separate errors from feature gaps, run lightweight eval loops on repeated failures, and promote useful patterns into durable workflow rules.
 
 **Best for:** continuous improvement, lessons learned, workflow hardening, and operational memory.
 
@@ -12,7 +12,7 @@
 
 - Stop repeating the same operational mistakes
 - Convert chat corrections into durable written rules
-- Separate learnings, errors, and feature requests cleanly
+- Separate learnings, errors, feature requests, and experiments cleanly
 - Promote important lessons into `AGENTS.md`, `TOOLS.md`, or `SOUL.md`
 - Build a lightweight self-improving operating loop around Mission Control / Obsidian
 
@@ -22,10 +22,11 @@
 
 This repo gives you a simple improvement loop:
 
-1. Log a learning, error, or feature request
+1. Log a learning, error, feature request, or experiment
 2. Store it in structured local files
-3. Promote the most important items into long-term operating rules
-4. Optionally write audit / learning notes into the Obsidian vault
+3. Run small binary-eval experiments when a repeated failure needs a tested guardrail
+4. Promote the most important items into long-term operating rules
+5. Optionally write audit / learning notes into the Obsidian vault
 
 ---
 
@@ -63,6 +64,12 @@ Log a feature request:
 node scripts/log-learning.mjs feature "Capability name" "User context" "Suggested implementation"
 ```
 
+Log a tested experiment:
+
+```bash
+node scripts/log-experiment.mjs "Target problem" "Baseline failure" "Single mutation" "eval1|eval2|eval3" "Result summary" "testing"
+```
+
 Promote a rule:
 
 ```bash
@@ -77,6 +84,8 @@ node scripts/promote-learning.mjs workflow "Rule text"
 - “Log this recurring error”
 - “Record this feature gap”
 - “Turn this correction into a workflow rule”
+- “Run an eval loop on this workflow/SOP/skill”
+- “Should we keep this new guardrail or discard it?”
 - “Build a self-improving OpenClaw workflow”
 
 ---
@@ -101,17 +110,20 @@ node scripts/promote-learning.mjs workflow "Rule text"
 # Files
 
 - `SKILL.md` — agent-facing routing and usage guidance
-- `scripts/log-learning.mjs` — append a learning / error / feature request
+- `scripts/log-learning.mjs` — append a learning / error / feature request / experiment
+- `scripts/log-experiment.mjs` — append a structured experiment with binary evals
 - `scripts/promote-learning.mjs` — promote a lesson into durable operating rules
 - `references/schema.md` — data structure guidance
 - `references/promotion-guide.md` — what to promote and where
 - `references/eval-loop.md` — how to run lightweight binary-eval improvement loops
 - `references/examples.md` — practical examples for summary gates and deploy closeout gates
+- `references/decision-rules.md` — when to log only, run an experiment, or promote immediately
 
 ---
 
 # Bottom line
 
-If you want OpenClaw to improve over time instead of repeating the same mistakes across sessions, this repo gives you a simple operational memory loop.
-oss sessions, this repo gives you a simple operational memory loop.
-es across sessions, this repo gives you a simple operational memory loop.
+If you want OpenClaw to improve over time instead of repeating the same mistakes across sessions, this repo now gives you:
+- an operational memory loop
+- a lightweight eval loop for testing whether a new guardrail actually helps
+- and a decision rule for when to log, experiment, or promote
