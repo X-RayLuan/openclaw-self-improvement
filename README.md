@@ -76,6 +76,12 @@ Promote a rule:
 node scripts/promote-learning.mjs workflow "Rule text"
 ```
 
+Summarize experiment outcomes:
+
+```bash
+node scripts/experiment-summary.mjs
+```
+
 ---
 
 # Best use cases
@@ -127,3 +133,4 @@ If you want OpenClaw to improve over time instead of repeating the same mistakes
 - an operational memory loop
 - a lightweight eval loop for testing whether a new guardrail actually helps
 - and a decision rule for when to log, experiment, or promote
+n to log, experiment, or promote
