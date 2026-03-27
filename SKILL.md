@@ -1,6 +1,6 @@
 ---
 name: openclaw-self-improvement
-description: This skill should be used when the user asks to capture learnings, log recurring errors, record feature gaps, improve agent workflows over time, operationalize corrections, or build a self-improving OpenClaw or ClawLite operating loop with Karen, Mission Control, and Obsidian vault support.
+description: This skill should be used when the user asks to capture learnings, log recurring errors, record feature gaps, improve agent workflows over time, operationalize corrections, build a self-improving OpenClaw or ClawLite operating loop, or test whether a new guardrail/SOP/checklist/skill change actually reduces repeated failures using binary evals and keep-or-discard decisions.
 ---
 
 # OpenClaw / ClawLite Self-Improvement
@@ -11,6 +11,7 @@ Use this skill to turn mistakes, corrections, blockers, and better approaches in
 AI ops often repeat the same failures because mistakes stay in chat history instead of becoming system rules. This skill creates a lightweight improvement loop:
 - log failures and learnings
 - separate errors from feature requests
+- run small eval-driven experiments on repeated failures
 - promote important patterns into AGENTS.md / TOOLS.md / SOUL.md
 - write operator notes into Obsidian vault
 - support stricter acceptance via Karen / Mission Control
@@ -31,6 +32,7 @@ Use this skill when the user asks:
 - `.learnings/LEARNINGS.md`
 - `.learnings/ERRORS.md`
 - `.learnings/FEATURE_REQUESTS.md`
+- `.learnings/EXPERIMENTS.md`
 - Obsidian vault note under `ClawLite/Operations/Learnings/`
 
 ## Command examples
@@ -38,6 +40,8 @@ Use this skill when the user asks:
 node {baseDir}/scripts/log-learning.mjs learning "Summary" "Details" "Suggested action"
 node {baseDir}/scripts/log-learning.mjs error "Summary" "Error details" "Suggested fix"
 node {baseDir}/scripts/log-learning.mjs feature "Capability name" "User context" "Suggested implementation"
+node {baseDir}/scripts/log-learning.mjs experiment "Target problem" "Baseline failure" "Single mutation to test"
+node {baseDir}/scripts/log-experiment.mjs "Target problem" "Baseline failure" "Single mutation" "eval1|eval2|eval3" "Result summary" "testing"
 node {baseDir}/scripts/promote-learning.mjs workflow "Rule text"
 ```
 
@@ -62,6 +66,13 @@ Use for:
 - operator workflow gaps
 - recurring requests that deserve a build item
 
+### experiment
+Use for:
+- repeated failures that need a tested guardrail
+- checklist/SOP/schema changes that should be validated before broad promotion
+- keep/discard decisions on new operating rules
+- binary eval loops for skills, workflows, receipts, summaries, or deploy closeout rules
+
 ## Promotion targets
 - `AGENTS.md` → workflow / delegation / execution rules
 - `TOOLS.md` → tool gotchas, secrets locations, environment routing rules
@@ -73,12 +84,25 @@ This skill is designed to work with stricter ops governance:
 - Karen can reference learnings when repeated failures happen
 - Mission Control can treat promoted learnings as new operating rules
 - recurring blockers can be elevated from chat into tracked operational knowledge
+- experiments can test whether a new summary contract, receipt rule, or deploy closeout guardrail actually reduced the failure pattern
+
+## Eval loop rule
+When a repeated failure is turning into a new rule/SOP/checklist, do not only log it.
+Also:
+1. define 3-5 binary evals
+2. record the baseline failure state
+3. change one thing at a time
+4. re-check the same evals
+5. classify the change as keep / discard / partial_keep
+
+Use `{baseDir}/references/eval-loop.md` for the experiment format and examples.
 
 ## Output goal
 A good use of this skill should produce one of:
 - a durable learning entry
 - a durable error entry
 - a durable feature request entry
+- a durable experiment entry with binary evals
 - a promoted rule in AGENTS.md / TOOLS.md / SOUL.md
 - an Obsidian vault operations note
 
@@ -90,14 +114,5 @@ A good use of this skill should produce one of:
 ## References
 - `{baseDir}/references/schema.md`
 - `{baseDir}/references/promotion-guide.md`
- to reduce repeated mistakes, not to excuse them.
-
-## References
-- `{baseDir}/references/schema.md`
-- `{baseDir}/references/promotion-guide.md`
-a learning entry as closure for a broken deliverable.
-- Use this skill to reduce repeated mistakes, not to excuse them.
-
-## References
-- `{baseDir}/references/schema.md`
-- `{baseDir}/references/promotion-guide.md`
+- `{baseDir}/references/eval-loop.md`
+- `{baseDir}/references/examples.md`

@@ -105,6 +105,8 @@ node scripts/promote-learning.mjs workflow "Rule text"
 - `scripts/promote-learning.mjs` — promote a lesson into durable operating rules
 - `references/schema.md` — data structure guidance
 - `references/promotion-guide.md` — what to promote and where
+- `references/eval-loop.md` — how to run lightweight binary-eval improvement loops
+- `references/examples.md` — practical examples for summary gates and deploy closeout gates
 
 ---
 
