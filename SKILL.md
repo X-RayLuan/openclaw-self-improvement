@@ -1,6 +1,6 @@
 ---
 name: openclaw-self-improvement
-description: This skill should be used when the user asks to capture learnings, log recurring errors, record feature gaps, improve agent workflows over time, operationalize corrections, build a self-improving OpenClaw or ClawLite operating loop, or test whether a new guardrail/SOP/checklist/skill change actually reduces repeated failures using binary evals and keep-or-discard decisions.
+description: A reusable self-improving AI agent skill for OpenClaw and ClawLite that turns repeated failures into guardrails, binary eval loops, SOPs, checklists, and proof-based operational improvements.
 ---
 
 # OpenClaw / ClawLite Self-Improvement
