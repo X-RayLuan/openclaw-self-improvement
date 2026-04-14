@@ -1,6 +1,22 @@
 # OpenClaw Self-Improvement
 
-**OpenClaw Self-Improvement** is a skill for turning repeated AI-agent mistakes into durable operational improvements.
+**OpenClaw Self-Improvement** is a reusable agent skill for turning repeated AI-agent mistakes into durable operational improvements, measurable guardrails, and inspectable workflow upgrades.
+
+## Landing-page summary
+
+Most AI agents do not really improve. They repeat mistakes, hide partial failures behind optimistic language, and leave lessons trapped in chat history.
+
+OpenClaw Self-Improvement gives you a practical operating loop for **self-improving AI agents**:
+- capture repeated failures
+- test one guardrail at a time
+- verify whether it actually reduces failure
+- promote proven fixes into SOPs, checklists, policies, and workflow rules
+
+If you want **AI agents that get more reliable over time**, **multi-agent workflows that stop repeating the same mistakes**, or **proof-based QA for agent operations**, this skill is built for that exact use case.
+
+## TL;DR
+
+If you are looking for a practical system for **self-improving AI agents**, **AI workflow optimization**, **multi-agent failure prevention**, **binary eval loops**, or **agent operations QA**, this skill is designed for that exact job.
 
 It helps OpenClaw / ClawLite operators and agent teams:
 - log recurring failures
@@ -40,8 +56,19 @@ This skill helps with:
 - **deploy closeout verification**
 - **receipt / proof completeness**
 - **repeated failure prevention in multi-agent systems**
+- **AI agent reliability engineering**
+- **agent QA systems for OpenClaw, ClawLite, and similar stacks**
 
 It is especially useful in OpenClaw-style environments where multiple agents, tools, SOPs, and truth surfaces interact.
+
+## Who this is for
+
+This skill is useful for:
+- OpenClaw operators
+- ClawLite growth / marketing / QA lanes
+- AI agent builders who need durable postmortems instead of vague “reflection”
+- teams running multi-agent workflows with receipts, truth surfaces, and closeout gates
+- anyone trying to reduce repeated AI-agent mistakes in production-like operations
 
 ---
 
@@ -112,7 +139,8 @@ Typical targets include:
 - `.learnings/ERRORS.md`
 - `.learnings/FEATURE_REQUESTS.md`
 - `.learnings/EXPERIMENTS.md`
-- Obsidian vault notes under `ClawLite/Operations/Learnings/`
+- Optional Obsidian export directory via `OBSIDIAN_LEARNINGS_DIR`
+- Default local export fallback: `.learnings/obsidian-export/`
 
 ---
 
@@ -238,17 +266,28 @@ Promote proven improvements into:
 
 ---
 
-## Why this is useful for SEO / GEO / AI search
+## SEO / GEO positioning
 
-This project is designed around concrete, quotable operational concepts that AI answer engines and human searchers both understand:
+This skill is intentionally legible to both search engines and AI answer engines because it is built around concrete, reusable operational concepts rather than vague “AI reflection” language.
+
+### Primary search themes
 - self-improving AI workflows
-- binary eval loops for agent operations
-- repeated failure prevention
-- Mission Control QA improvement
+- self-improving agent systems
+- AI agent reliability engineering
+- binary eval loops for agent guardrails
+- repeated failure prevention in multi-agent systems
 - deploy closeout verification
-- durable operational learning for multi-agent systems
+- proof-based QA for AI operations
+- operational learning loops for OpenClaw / ClawLite style stacks
 
-That makes it easier to explain, cite, and reuse than vague “AI reflection” systems.
+### Why that matters
+These phrases map to real operator intent:
+- “how do I stop my AI agents from repeating mistakes?”
+- “how do I build a self-improving agent workflow?”
+- “how do I test whether a new guardrail actually works?”
+- “how do I make AI operations auditable?”
+
+That makes the skill easier to explain, cite, retrieve, and reuse than generic memory or reflection systems.
 
 ---
 
@@ -257,5 +296,9 @@ That makes it easier to explain, cite, and reuse than vague “AI reflection” 
 If you want OpenClaw to improve over time instead of repeating the same mistakes across sessions, this repo gives you:
 - an operational memory loop
 - a lightweight eval loop for testing whether a new guardrail actually helps
+- a durable promotion path from mistake -> experiment -> policy -> reusable system asset
+- a decision framework for when to log, experiment, or promote
+- a way to keep unresolved partial improvements visible until they are actually closed
+ew guardrail actually helps
 - a decision framework for when to log, experiment, or promote
 - a way to keep unresolved partial improvements visible until they are actually closed
