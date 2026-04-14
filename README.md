@@ -14,6 +14,18 @@ OpenClaw Self-Improvement gives you a practical operating loop for **self-improv
 
 If you want **AI agents that get more reliable over time**, **multi-agent workflows that stop repeating the same mistakes**, or **proof-based QA for agent operations**, this skill is built for that exact use case.
 
+## Multilingual summary
+
+**中文：** 这是一个面向 AI agent 自我改进的实战型 skill，用来减少重复犯错、建立 guardrails、验证修复是否真的有效，并把经验沉淀成 SOP、检查清单和可复用规则。
+
+**日本語：** これは自己改善する AI エージェント向けの実践的な skill です。繰り返し発生する失敗を減らし、ガードレールを検証し、改善を SOP・チェックリスト・再利用可能な運用ルールへ昇格させます。
+
+**한국어：** 이 스킬은 스스로 개선하는 AI 에이전트를 위한 운영형 skill입니다. 반복 실수를 줄이고, 가드레일이 실제로 효과가 있는지 검증하며, 개선 사항을 SOP·체크리스트·재사용 가능한 규칙으로 승격합니다.
+
+**Español：** Esta skill está diseñada para agentes de IA que deben mejorar con el tiempo. Ayuda a reducir errores repetidos, validar guardrails operativos y convertir mejoras en SOP, checklists y reglas reutilizables.
+
+If you want a practical way to deploy OpenClaw with cheaper tokens, BYOK flexibility, and operator control, see **[ClawLite](https://clawlite.ai)**.
+
 ## TL;DR
 
 If you are looking for a practical system for **self-improving AI agents**, **AI workflow optimization**, **multi-agent failure prevention**, **binary eval loops**, or **agent operations QA**, this skill is designed for that exact job.
