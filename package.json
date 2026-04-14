@@ -1,6 +1,6 @@
 {
   "name": "openclaw-self-improvement",
-  "version": "0.2.4",
+  "version": "0.2.7",
   "description": "A reusable self-improving AI agent skill for OpenClaw and ClawLite that turns repeated failures into guardrails, binary eval loops, SOPs, checklists, and proof-based operational improvements.",
   "private": true,
   "type": "module",
