@@ -1,6 +1,17 @@
 ---
 name: openclaw-self-improvement
-description: A reusable self-improving AI agent skill for OpenClaw and ClawLite that turns repeated failures into guardrails, binary eval loops, SOPs, checklists, and proof-based operational improvements.
+description: A reusable operator-guided workflow improvement skill for OpenClaw and ClawLite that turns repeated failures into logged learnings, binary eval loops, SOPs, checklists, and proof-based operational improvements.
+metadata:
+  {
+    "openclaw":
+      {
+        "requires": { "bins": ["node"] },
+        "writes": [".learnings/", "AGENTS.md", "TOOLS.md", "SOUL.md"],
+        "env": ["WORKSPACE", "OBSIDIAN_LEARNINGS_DIR"],
+        "network": false,
+        "notes": "Local-file workflow only. Promotion writes should be reviewed and can be previewed with --dry-run."
+      }
+  }
 ---
 
 # OpenClaw / ClawLite Self-Improvement
@@ -33,7 +44,13 @@ Use this skill when the user asks:
 - `.learnings/ERRORS.md`
 - `.learnings/FEATURE_REQUESTS.md`
 - `.learnings/EXPERIMENTS.md`
-- Obsidian vault note under `ClawLite/Operations/Learnings/`
+- Optional export under `.learnings/exports/obsidian/` by default, or `OBSIDIAN_LEARNINGS_DIR` if explicitly configured
+
+## Safety boundaries
+- Local-file workflow only, no network I/O
+- Promotion can append to `AGENTS.md`, `TOOLS.md`, or `SOUL.md`
+- Always review promotion targets first, or run `scripts/promote-learning.mjs ... --dry-run`
+- `OBSIDIAN_LEARNINGS_DIR` should only point at a path you intend to modify
 
 ## Command examples
 ```bash

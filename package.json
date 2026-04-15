@@ -1,25 +1,31 @@
 {
   "name": "openclaw-self-improvement",
-  "version": "0.2.8",
-  "description": "A reusable self-improving AI agent skill for OpenClaw and ClawLite that turns repeated failures into guardrails, binary eval loops, SOPs, checklists, and proof-based operational improvements.",
+  "version": "0.2.9",
+  "description": "An operator-guided workflow improvement skill for OpenClaw and ClawLite that logs learnings, runs eval loops, and promotes reviewed fixes into local SOPs and configuration files.",
   "private": true,
   "type": "module",
   "keywords": [
-    "openclaw",
-    "self-improvement",
-    "lessons-learned",
-    "ops-learning",
-    "eval-loop",
     "binary-evals",
-    "mission-control",
+    "continuous-improvement",
+    "dry-run",
+    "eval-loop",
     "karen",
+    "lessons-learned",
+    "local-file-writes",
+    "mission-control",
     "obsidian",
-    "continuous-improvement"
+    "openclaw",
+    "operator-guided",
+    "ops-learning",
+    "self-improvement"
   ],
   "bin": {
     "openclaw-log-learning": "./scripts/log-learning.mjs",
     "openclaw-log-experiment": "./scripts/log-experiment.mjs",
     "openclaw-experiment-summary": "./scripts/experiment-summary.mjs",
     "openclaw-promote-learning": "./scripts/promote-learning.mjs"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
