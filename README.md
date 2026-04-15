@@ -152,7 +152,8 @@ Typical targets include:
 - `.learnings/FEATURE_REQUESTS.md`
 - `.learnings/EXPERIMENTS.md`
 - Optional Obsidian export directory via `OBSIDIAN_LEARNINGS_DIR`
-- Default local export fallback: `.learnings/obsidian-export/`
+- Default local export fallback: `.learnings/exports/obsidian/`
+- Safe by default: no hard-coded external vault path, and `scripts/promote-learning.mjs` prints the resolved write target before writing
 
 ---
 
@@ -194,6 +195,7 @@ node scripts/log-experiment.mjs "Target problem" "Baseline failure" "Single muta
 
 ```bash
 node scripts/promote-learning.mjs workflow "Rule text"
+node scripts/promote-learning.mjs obsidian "Reusable learning" --dry-run
 ```
 
 ### Summarize experiment outcomes
@@ -269,7 +271,7 @@ Promote proven improvements into:
 - `scripts/log-learning.mjs` — append a learning / error / feature request / experiment
 - `scripts/log-experiment.mjs` — append a structured experiment with binary evals
 - `scripts/experiment-summary.mjs` — summarize keep / partial_keep / discard outcomes and flag follow-up debt
-- `scripts/promote-learning.mjs` — promote a lesson into durable operating rules
+- `scripts/promote-learning.mjs` — promote a lesson into durable operating rules with explicit path echo and optional `--dry-run`
 - `references/schema.md` — data structure guidance
 - `references/promotion-guide.md` — what to promote and where
 - `references/eval-loop.md` — how to run lightweight binary-eval improvement loops
