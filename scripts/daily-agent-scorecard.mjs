@@ -3,7 +3,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import process from 'node:process';
 
-import { buildAgentScorecard, markdownScorecard, readAgentSessions, readJsonSafe } from './harness-improvement-lib.mjs';
+import { buildAgentScorecard, buildRepairTickets, markdownScorecard, readAgentSessions, readJsonSafe, writeRepairTickets } from './harness-improvement-lib.mjs';
 
 const workspace = process.env.WORKSPACE || resolve(process.env.HOME || '/Users/m1', '.openclaw/workspace');
 const dataDir = resolve(workspace, 'mission-control', 'data');
@@ -26,10 +26,14 @@ function shanghaiDate() {
 const date = argValue('--date', shanghaiDate());
 const reportPath = resolve(argValue('--report', resolve(dataDir, 'progress-report.json')));
 const outputPath = argValue('--output', null);
+const ticketsDir = argValue('--tickets-dir', resolve(dataDir, 'recovery-tickets-v3'));
 const agents = (argValue('--agents', defaultAgents.join(',')) || '').split(',').map((agent) => agent.trim()).filter(Boolean);
 const progressReport = readJsonSafe(reportPath, {});
 const sessions = readAgentSessions(openclawHome, agents);
 const scorecard = buildAgentScorecard({ date, progressReport, sessions });
+const tickets = hasFlag('--repair') ? buildRepairTickets(scorecard) : [];
+const writtenTickets = hasFlag('--repair') ? writeRepairTickets(tickets, ticketsDir) : [];
+if (writtenTickets.length) scorecard.repairTickets = writtenTickets;
 
 if (outputPath) {
   const path = resolve(outputPath);

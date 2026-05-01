@@ -1,6 +1,6 @@
 {
   "name": "openclaw-self-improvement",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "An operator-guided workflow improvement skill for OpenClaw and ClawLite that logs learnings, runs eval loops, and promotes reviewed fixes into local SOPs and configuration files.",
   "private": true,
   "type": "module",

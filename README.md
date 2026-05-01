@@ -274,6 +274,7 @@ Promote proven improvements into:
 - `scripts/promote-learning.mjs` — promote a lesson into durable operating rules with explicit path echo and optional `--dry-run`
 - `scripts/analyze-openclaw-failures.mjs` — classify OpenClaw gateway, provider, session, tool, and platform failures
 - `scripts/daily-agent-scorecard.mjs` — generate a same-day agent delivery scorecard from Mission Control and session evidence
+- `scripts/daily-agent-scorecard.mjs --repair` — create deterministic recovery tickets for failed, blocked, and pending lanes
 - `references/schema.md` — data structure guidance
 - `references/promotion-guide.md` — what to promote and where
 - `references/eval-loop.md` — how to run lightweight binary-eval improvement loops

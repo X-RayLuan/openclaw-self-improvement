@@ -70,6 +70,7 @@ node {baseDir}/scripts/log-experiment.mjs "Target problem" "Baseline failure" "S
 node {baseDir}/scripts/promote-learning.mjs workflow "Rule text"
 node {baseDir}/scripts/analyze-openclaw-failures.mjs --output /Users/m1/.openclaw/workspace/memory/harness-backlog-latest.md
 node {baseDir}/scripts/daily-agent-scorecard.mjs --output /Users/m1/.openclaw/workspace/mission-control/data/delivery-receipts/agent-scorecard-$(date +%F).md
+node {baseDir}/scripts/daily-agent-scorecard.mjs --repair --output /Users/m1/.openclaw/workspace/mission-control/data/delivery-receipts/agent-scorecard-$(date +%F).md
 ```
 
 ## Categories
@@ -120,8 +121,15 @@ Default failure taxonomy:
 Harness workflow:
 1. Scan logs and receipts with `scripts/analyze-openclaw-failures.mjs`.
 2. Generate same-day agent scorecard with `scripts/daily-agent-scorecard.mjs`.
-3. Convert repeated classes into an `error`, `experiment`, or promoted rule.
-4. Do not call a workflow closed until the scorecard has proof links or explicit blocker evidence.
+3. Run `scripts/daily-agent-scorecard.mjs --repair` to create/update recovery tickets for failed, blocked, or pending lanes.
+4. Convert repeated classes into an `error`, `experiment`, or promoted rule.
+5. Do not call a workflow closed until the scorecard has proof links or explicit blocker evidence.
+
+Repair loop rules:
+- Every failed/blocked/pending lane should have a `failureClass`, `repairState`, `nextAction`, `repeatCount7d`, and evidence.
+- `ProofMissing`, `UpstreamMissing`, and `HumanApprovalRequired` must not be blindly retried.
+- Repeated `agent + lane + failureClass` failures within 7 days should become `EXPERIMENT_REQUIRED`.
+- Recovery tickets should be written under `mission-control/data/recovery-tickets-v3/YYYY-MM-DD/`.
 
 ## Promotion targets
 - `AGENTS.md` → workflow / delegation / execution rules

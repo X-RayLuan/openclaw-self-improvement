@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const FAILURE_RULES = [
@@ -95,7 +95,7 @@ export function buildAgentScorecard({ date, progressReport, sessions = {} }) {
     else if (stateText.includes('BLOCK')) agents[agent].blocked += 1;
     else if (stateText.includes('FAIL')) agents[agent].failed += 1;
     else agents[agent].inProgress += 1;
-    agents[agent].lanes.push({
+    const row = {
       lane: laneName,
       state: lane.state || null,
       agentStatus: lane.agentStatus || null,
@@ -104,7 +104,10 @@ export function buildAgentScorecard({ date, progressReport, sessions = {} }) {
       missing: lane.missing_receipts || lane.todayBlockedOrMissing || [],
       evidence: lane.evidenceLinks || lane.receipts || [],
       nextHandoff: lane.nextHandoff || null,
-    });
+    };
+    const repair = classifyLaneRepair(row, { date: date || progressReport?.date, agent, lane: laneName, history: arguments[0]?.history || [] });
+    if (repair) row.repair = repair;
+    agents[agent].lanes.push(row);
   }
   for (const [agent, rows] of Object.entries(sessions)) {
     agents[agent] ??= { agent, delivered: 0, blocked: 0, failed: 0, inProgress: 0, lanes: [], lastSessionKey: null, lastSessionAt: null };
@@ -123,15 +126,124 @@ export function buildAgentScorecard({ date, progressReport, sessions = {} }) {
   };
 }
 
+export function classifyLaneRepair(lane, { date, agent, lane: laneName, history = [] } = {}) {
+  const stateText = String(lane.agentStatus || lane.state || '').toUpperCase();
+  const isFailure = stateText.includes('FAIL') || stateText.includes('BLOCK') || stateText.includes('PENDING');
+  if (!isFailure) return null;
+
+  const text = [
+    lane.blocker,
+    lane.summary,
+    lane.nextHandoff,
+    ...(Array.isArray(lane.missing) ? lane.missing : []),
+  ].filter(Boolean).join('\n');
+  const failureClass = inferLaneFailureClass(text);
+  const repeatCount7d = 1 + countRecentRepeats(history, { date, agent, lane: laneName, failureClass });
+  const repairState = repairStateForFailure(failureClass, repeatCount7d);
+
+  return {
+    repairState,
+    failureClass,
+    nextAction: nextActionForFailure(failureClass, lane),
+    repeatCount7d,
+    escalation: repeatCount7d >= 2 ? 'Create a self-improvement experiment before another blind retry.' : null,
+  };
+}
+
+export function buildRepairTickets(scorecard) {
+  const tickets = [];
+  for (const agent of Object.values(scorecard.agents || {})) {
+    for (const lane of agent.lanes || []) {
+      if (!lane.repair) continue;
+      const laneId = lane.lane.startsWith(`${agent.agent}-`) ? lane.lane : `${agent.agent}-${lane.lane}`;
+      tickets.push({
+        ticket_id: `rt-${scorecard.date}-${laneId}-harness-repair`,
+        date: scorecard.date,
+        owner: agent.agent,
+        agent: agent.agent,
+        lane: lane.lane,
+        failureClass: lane.repair.failureClass,
+        repairState: lane.repair.repairState,
+        blocker: lane.blocker,
+        missingProof: lane.missing || [],
+        evidence: lane.evidence || [],
+        nextAction: lane.repair.nextAction,
+        repeatCount7d: lane.repair.repeatCount7d,
+        escalation: lane.repair.escalation,
+        retryPolicy: retryPolicyForFailure(lane.repair.failureClass),
+        status: lane.repair.repairState === 'EXPERIMENT_REQUIRED' ? 'NEEDS_EXPERIMENT' : 'OPEN',
+        generatedAt: new Date().toISOString(),
+      });
+    }
+  }
+  return tickets;
+}
+
+export function writeRepairTickets(tickets, rootDir) {
+  const written = [];
+  for (const ticket of tickets) {
+    const dir = resolve(rootDir, ticket.date);
+    mkdirSync(dir, { recursive: true });
+    const path = resolve(dir, `${ticket.ticket_id}.json`);
+    writeFileSync(path, `${JSON.stringify(ticket, null, 2)}\n`);
+    written.push(path);
+  }
+  return written;
+}
+
 export function markdownScorecard(scorecard) {
   const lines = [`# Agent Harness Scorecard — ${scorecard.date}`, '', `Generated: ${scorecard.generatedAt}`, `Status: ${scorecard.status || 'unknown'}`, '', scorecard.summary || 'No summary available.', ''];
   for (const agent of Object.values(scorecard.agents).sort((a, b) => a.agent.localeCompare(b.agent))) {
     lines.push(`## ${agent.agent}`, `- Delivered: ${agent.delivered}`, `- Blocked: ${agent.blocked}`, `- Failed: ${agent.failed}`, `- In progress/unknown: ${agent.inProgress}`);
     if (agent.lastSessionKey) lines.push(`- Last session: ${agent.lastSessionKey} (${agent.lastSessionAt || 'unknown time'})`);
-    for (const lane of agent.lanes) lines.push(`- Lane ${lane.lane}: ${lane.agentStatus || lane.state || 'unknown'}${lane.blocker ? ` — ${lane.blocker}` : ''}`);
+    for (const lane of agent.lanes) {
+      lines.push(`- Lane ${lane.lane}: ${lane.agentStatus || lane.state || 'unknown'}${lane.blocker ? ` — ${lane.blocker}` : ''}`);
+      if (lane.repair) lines.push(`- Repair ${lane.lane}: ${lane.repair.repairState} / ${lane.repair.failureClass} / repeat7d=${lane.repair.repeatCount7d}`);
+    }
     lines.push('');
   }
   return `${lines.join('\n').trim()}\n`;
+}
+
+function inferLaneFailureClass(text) {
+  const body = String(text || '');
+  if (/proof|receipt|live URL|visibility|验真|证据/i.test(body)) return 'ProofMissing';
+  if (/upstream|waiting for|等待/i.test(body)) return 'UpstreamMissing';
+  const classified = classifyFailureText(body);
+  return classified[0]?.failureClass || 'UnknownFailure';
+}
+
+function countRecentRepeats(history, { date, agent, lane, failureClass }) {
+  const now = date ? Date.parse(`${date}T00:00:00Z`) : Date.now();
+  const sevenDays = 7 * 24 * 60 * 60 * 1000;
+  return (history || []).filter((item) => {
+    if (item.agent !== agent || item.lane !== lane || item.failureClass !== failureClass) return false;
+    const t = Date.parse(`${item.date}T00:00:00Z`);
+    return Number.isFinite(t) && now - t > 0 && now - t <= sevenDays;
+  }).length;
+}
+
+function repairStateForFailure(failureClass, repeatCount7d) {
+  if (repeatCount7d >= 2) return 'EXPERIMENT_REQUIRED';
+  if (failureClass === 'HumanApprovalRequired') return 'HUMAN_APPROVAL_REQUIRED';
+  if (failureClass === 'UpstreamMissing') return 'BLOCKED_UPSTREAM';
+  return 'TICKET_CREATED';
+}
+
+function nextActionForFailure(failureClass, lane) {
+  if (failureClass === 'ProofMissing') return 'Find or produce missing proof/receipt before retrying the agent.';
+  if (failureClass === 'UpstreamMissing') return 'Repair upstream owner/lane before asking downstream to retry.';
+  if (failureClass === 'ToolInvalidArguments') return 'Add a tool-call guardrail or example, then rerun the smallest failing step.';
+  if (failureClass === 'SessionContextRot') return 'Archive stale session or start a fresh session so updated skills/config load.';
+  if (failureClass === 'ExternalPlatformBlocked') return 'Use browser/ACP fallback or record explicit platform blocker proof.';
+  if (failureClass === 'GatewayUnavailable') return 'Fix gateway/LaunchAgent/port readiness before retrying channel work.';
+  return lane.nextHandoff || 'Create a concrete repair action with evidence and owner.';
+}
+
+function retryPolicyForFailure(failureClass) {
+  if (['ProofMissing', 'UpstreamMissing', 'HumanApprovalRequired'].includes(failureClass)) return 'do_not_retry_until_unblocked';
+  if (['GatewayUnavailable', 'SessionContextRot', 'ToolInvalidArguments'].includes(failureClass)) return 'repair_then_single_retry';
+  return 'single_retry_with_evidence';
 }
 
 export function defaultFailureSources(openclawHome, workspace) {
