@@ -272,6 +272,8 @@ Promote proven improvements into:
 - `scripts/log-experiment.mjs` — append a structured experiment with binary evals
 - `scripts/experiment-summary.mjs` — summarize keep / partial_keep / discard outcomes and flag follow-up debt
 - `scripts/promote-learning.mjs` — promote a lesson into durable operating rules with explicit path echo and optional `--dry-run`
+- `scripts/analyze-openclaw-failures.mjs` — classify OpenClaw gateway, provider, session, tool, and platform failures
+- `scripts/daily-agent-scorecard.mjs` — generate a same-day agent delivery scorecard from Mission Control and session evidence
 - `references/schema.md` — data structure guidance
 - `references/promotion-guide.md` — what to promote and where
 - `references/eval-loop.md` — how to run lightweight binary-eval improvement loops
@@ -311,8 +313,5 @@ If you want OpenClaw to improve over time instead of repeating the same mistakes
 - an operational memory loop
 - a lightweight eval loop for testing whether a new guardrail actually helps
 - a durable promotion path from mistake -> experiment -> policy -> reusable system asset
-- a decision framework for when to log, experiment, or promote
-- a way to keep unresolved partial improvements visible until they are actually closed
-ew guardrail actually helps
 - a decision framework for when to log, experiment, or promote
 - a way to keep unresolved partial improvements visible until they are actually closed
